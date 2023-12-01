@@ -65,24 +65,38 @@ void print_percent(va_list args, int *count)
 
 void print_int(va_list args, int *count) {
     int i = va_arg(args, int);
-    unsigned int u_i = (unsigned int)i;
-   int divisor = 1;   
-    if (i < 0) {
+    int divisor = 1;
+long temp;
+
+
+    if (i == 0) {
+        _putchar('0');
+        (*count)++;
+        return;
+    }
+
+    if (i == INT_MIN) {
+      _putchar('-');
+        (*count)++;
+	temp = -(long)INT_MIN;
+        i = INT_MAX;
+	if(temp > INT_MAX){
+		i--;
+	}
+    }else if(i < 0){
         _putchar('-');
         (*count)++;
         i = -i;
     }
 
-
-
-    while (u_i / divisor > 9) {
+      while (i / divisor > 9) {
         divisor *= 10;
     }
 
     while (divisor != 0) {
-        _putchar('0' + u_i / divisor);
+        _putchar('0' + i / divisor);
         (*count)++;
-        u_i %= divisor;
+        i %= divisor;
         divisor /= 10;
     }
  }
