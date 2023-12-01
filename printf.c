@@ -57,6 +57,23 @@ void print_percent(va_list args, int *count)
 }
 
 /**
+ * print_int - Prints a percent symbol
+ * @args: A va_list that is not used in this function
+ * @count: will be incremented by the number of characters printed
+ */
+
+void print_int(va_list args, int *count) {
+    int i = va_arg(args, int);
+    printf("%d", i);
+    while (i != 0) {
+        i /= 10;
+        (*count)++;
+    }
+}
+
+
+
+/**
  * handle_format - Handles format specifiers for _printf
  * @traverse: Pointer to the current character in the format string
  * @args: The va_list of arguments to print
@@ -70,6 +87,8 @@ void handle_format(const char *traverse, va_list args, int *count)
 		{"c", print_char},
 		{"s", print_string},
 		{"%", print_percent},
+		{"d", print_int},
+		{"i", print_int},
 		{NULL, NULL}
 	};
 
