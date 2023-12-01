@@ -90,7 +90,9 @@ int _printf(const char *format, ...)
 				default:
 					write(1, "%", 1);
 					write(1, &format[i], 1);
-					count += 2; } }
+					count += 2;
+			}
+		}
 		else
 		{
 			write(1, &format[i], 1);
