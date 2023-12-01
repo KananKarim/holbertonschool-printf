@@ -21,5 +21,5 @@ int _putchar(char c);
 void print_char(va_list args, int *count);
 void print_string(va_list args, int *count);
 void print_percent(va_list args, int *count);
-
+void print_int(va_list args, int *count);
 #endif
