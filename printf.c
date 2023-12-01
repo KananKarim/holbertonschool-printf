@@ -1,185 +1,101 @@
-#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
+#include <unistd.h>
+#include <stdarg.h>
 #include "main.h"
-
 /**
- * print_char - Prints a character
- * @args: A va_list pointing to the character to be printed
- * @count: will be incremented by the number of characters printed
+ *print_char - a function that prints char
+ *@args: number of arguments
  */
 
-void print_char(va_list args, int *count)
+void print_char(va_list args)
 {
 	int c = va_arg(args, int);
 
-	_putchar(c);
-	(*count)++;
+	write(1, &c, 1);
 }
 
 /**
- * print_string - Prints a string
- * @args: A va_list pointing to the string to be printed
- * @count: will be incremented by the number of characters printed
+ *print_string - a function that prints string
+ *@args: number of rgumnts
+ *Return: string
  */
-
-void print_string(va_list args, int *count)
+int print_string(va_list args)
 {
-	char *temp;
-	char *s;
+	char *str;
 
-	if (args == NULL)
-		return;
-
-	s = va_arg(args, char *);
-
-	if (s == NULL)
-		s = "(null)";
-
-	for (temp = s; *temp != '\0'; temp++)
+	str = va_arg(args, char*);
+	if (str == NULL)
 	{
-		_putchar(*temp);
-		(*count)++;
+		return (write(1, "(null)", strlen("(null)")));
+	}
+	else
+	{
+		return (write(1, str, strlen(str)));
 	}
 }
 
-/**
- * print_percent - Prints a percent symbol
- * @args: A va_list that is not used in this function
- * @count: will be incremented by the number of characters printed
- */
 
-void print_percent(va_list args, int *count)
+/**
+ * print_int - function that prints numbers
+ * @args: list of arguments
+ * Return: inetegers
+ */
+int print_int(va_list args)
 {
-	(void)args;
-	_putchar('%');
-	(*count)++;
+	int num = va_arg(args, int);
+	int count = 0;
+	char buffer[12];
+
+	count = snprintf(buffer, sizeof(buffer), "%d", num);
+	write(1, buffer, count);
+	return (count);
 }
 
 /**
- * print_int - Prints an integer
- * @args: A va_list pointing to the integer to be printed
- * @count: will be incremented by the number of characters printed
+ * _printf - function that produces output
+ * Return: the number of characters printed
+ * @format: character string
  */
-
-void print_int(va_list args, int *count)
-{
-    int num = va_arg(args, int);
-    int i, j, power;
-    int temp;
-    int digits = 0;
-
-    if (num == 0) {
-        _putchar('0');
-        (*count)++;
-        return;
-    }
-
-    if (num < 0) {
-        _putchar('-');
-        (*count)++;
-    }
-
-    temp = num < 0 ? -(num / 10) : num;
-    while (temp != 0) {
-        digits++;
-        temp /= 10;
-    }
-
-    for (i = 0; i < digits; i++) {
-        power = 1;
-        for (j = 0; j < digits - i - 1; j++)
-            power *= 10;
-        if (num < 0 && i == 0) {
-            _putchar(-(num / power) % 10 + '0');
-        } else {
-            _putchar((num / power) % 10 + '0');
-        }
-        (*count)++;
-    }
-    if (num < 0) {
-        _putchar(-(num % 10) + '0');
-        (*count)++;
-    }
-}
-
-
-
-
-
-/**
- * handle_format - Handles format specifiers for _printf
- * @traverse: Pointer to the current character in the format string
- * @args: The va_list of arguments to print
- * @count: Pointer to the count of characters printed
- */
-
-void handle_format(const char *traverse, va_list args, int *count)
-{
-	int i;
-	print_t prints[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"%", print_percent},
-		{"d", print_int},
-		{"i", print_int},
-		{NULL, NULL}
-	};
-
-	for (i = 0; prints[i].specifier != NULL; i++)
-	{
-		if (*traverse == *(prints[i].specifier))
-		{
-			prints[i].print_func(args, count);
-			break;
-		}
-	}
-
-	if (*traverse == '\0')
-		return;
-
-	if (prints[i].specifier == NULL && *traverse != '\0')
-	{
-		_putchar('%');
-		_putchar(*traverse);
-		*count += 2;
-	}
-}
-
-/**
- * _printf - A printf-like function that prints a formatted string
- * @format: The format string
- * Return: The number of characters printed
- */
-
 int _printf(const char *format, ...)
 {
-	int count1 = 0;
-	const char *traverse;
-
 	va_list args;
+	int i = 0, count = 0;
 
 	va_start(args, format);
 	if (format == NULL || (strlen(format) == 1 && format[0] == '%'))
 		return (-1);
-	for (traverse = format; *traverse != '\0'; traverse++)
+	while (format[i] != '\0')
 	{
-		while (*traverse != '%' && *traverse != '\0')
+		if (format[i] == '%')
 		{
-			_putchar(*traverse);
-			traverse++;
-			count1++;
-		}
-		if (*traverse == '\0')
-			break;
-
-		traverse++;
-		handle_format(traverse, args, &count1);
-
-		if (*traverse == '\0')
-			return (-1);
-	}
+			i++;
+			switch (format[i])
+			{
+				case 'd':
+				case 'i':
+					count += print_int(args);
+					break;
+				case 'c':
+					print_char(args);
+					count++;
+					break;
+				case 's':
+					count += print_string(args);
+					break;
+				case '%':
+					write(1, "%", 1);
+					count++;
+					break;
+				default:
+					write(1, "%", 1);
+					write(1, &format[i], 1);
+					count += 2; } }
+		else
+		{
+			write(1, &format[i], 1);
+			count++; }
+		i++; }
 	va_end(args);
-	return (count1);
+	return (count);
 }
