@@ -68,7 +68,7 @@ void print_int(va_list args, int *count)
     int i, j, power;
     int temp = num;
     int digits = 0;
-
+    
     if (num == 0) {
         _putchar('0');
         (*count)++;
@@ -96,7 +96,9 @@ void print_int(va_list args, int *count)
 }
 
 
-/** handle_format - Handles format specifiers for _printf
+
+/**
+ * handle_format - Handles format specifiers for _printf
  * @traverse: Pointer to the current character in the format string
  * @args: The va_list of arguments to print
  * @count: Pointer to the count of characters printed
