@@ -17,7 +17,7 @@ void print_char(va_list args)
 
 /**
  *print_string - a function that prints string
- *@args: number of rgumnts
+ *@args: number of arguments
  *Return: string
  */
 int print_string(va_list args)
@@ -39,7 +39,7 @@ int print_string(va_list args)
 /**
  * print_int - function that prints numbers
  * @args: list of arguments
- * Return: inetegers
+ * Return: integers
  */
 int print_int(va_list args)
 {
