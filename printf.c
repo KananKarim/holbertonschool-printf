@@ -76,8 +76,16 @@ void handle_format(const char *traverse, va_list args, int *count)
 	{
 		if (*traverse == *(prints[i].specifier))
 		{
-			prints[i].print_func(args, count);
-			break;
+			if (*traverse == '%')
+			{
+				(*count)++;
+				break;
+			}
+			else
+			{
+				prints[i].print_func(args, count);
+				break;
+			}
 		}
 	}
 
