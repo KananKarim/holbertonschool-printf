@@ -56,8 +56,7 @@ void print_percent(va_list args, int *count)
 
 int _printf(const char *format, ...)
 {
-	int i;
-	int count1;
+	int i, count1 = 0;
 	const char *traverse;
 	print_t prints[] = {
 		{"c", print_char},
@@ -68,7 +67,8 @@ int _printf(const char *format, ...)
 	va_list args;
 
 	va_start(args, format);
-
+	if (format == NULL)
+		return (-1);
 	for (traverse = format; *traverse != '\0'; traverse++)
 	{
 		while (*traverse != '%' && *traverse != '\0')
@@ -88,8 +88,12 @@ int _printf(const char *format, ...)
 				break;
 			}
 		}
+		if (prints[i].specifier == NULL)
+		{
+			_putchar(*traverse);
+			count1++;
+		}
 	}
-
 	va_end(args);
 	return (count1);
 }
