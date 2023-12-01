@@ -66,8 +66,6 @@ void print_percent(va_list args, int *count)
 void print_int(va_list args, int *count) {
     int i = va_arg(args, int);
     int divisor = 1;
-long temp;
-
 
     if (i == 0) {
         _putchar('0');
@@ -78,10 +76,7 @@ long temp;
     if (i == INT_MIN) {
       _putchar('-');
         (*count)++;
-	temp = -(long)INT_MIN;
-        i = INT_MAX;
-	if(temp > INT_MAX){
-		i--;
+i = -(i +1);
 	}
     }else if(i < 0){
         _putchar('-');
