@@ -78,11 +78,10 @@ void print_int(va_list args, int *count)
 
     if (num < 0) {
         _putchar('-');
-        num *= -1;
         (*count)++;
     }
 
-    temp = num;
+    temp = num < 0 ? -(num / 10) : num;
     while (temp != 0) {
         digits++;
         temp /= 10;
@@ -92,14 +91,19 @@ void print_int(va_list args, int *count)
         power = 1;
         for (j = 0; j < digits - i - 1; j++)
             power *= 10;
-        if (num == INT_MIN && i == 0) {
-            _putchar((num / power) % 10 + '0' + 1);
+        if (num < 0 && i == 0) {
+            _putchar(-(num / power) % 10 + '0');
         } else {
             _putchar((num / power) % 10 + '0');
         }
         (*count)++;
     }
+    if (num < 0) {
+        _putchar(-(num % 10) + '0');
+        (*count)++;
+    }
 }
+
 
 
 
