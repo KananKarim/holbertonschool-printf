@@ -82,6 +82,8 @@ void handle_format(const char *traverse, va_list args, int *count)
 		_putchar(*traverse);
 		*count += 2;
 	}
+	else if (*traverse == '\0')
+		return;
 }
 
 /**
