@@ -76,7 +76,7 @@ void handle_format(const char *traverse, va_list args, int *count)
 		}
 	}
 
-	if (prints[i].specifier == NULL)
+	if (prints[i].specifier == NULL && *traverse != '\0')
 	{
 		_putchar('%');
 		_putchar(*traverse);
