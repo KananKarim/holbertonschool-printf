@@ -65,40 +65,28 @@ void print_percent(va_list args, int *count)
 
 void print_int(va_list args, int *count) {
     int i = va_arg(args, int);
-    int divisor = 1;
-
-    if (i == 0) {
-        _putchar('0');
-        (*count)++;
-        return;
-    }
-
-    if (i == INT_MIN) {
-      _putchar('-');
-        (*count)++;
-        i = -(i + 1);
-    }else if(i < 0){
+    unsigned int u_i = (unsigned int)i;
+   int divisor = 1;   
+    if (i < 0) {
         _putchar('-');
         (*count)++;
         i = -i;
     }
 
-      while (i / divisor > 9) {
+
+
+    while (u_i / divisor > 9) {
         divisor *= 10;
     }
 
     while (divisor != 0) {
-        _putchar('0' + i / divisor);
+        _putchar('0' + u_i / divisor);
         (*count)++;
-        i %= divisor;
+        u_i %= divisor;
         divisor /= 10;
     }
-}
-
-
-
-/**
- * handle_format - Handles format specifiers for _printf
+ }
+/** handle_format - Handles format specifiers for _printf
  * @traverse: Pointer to the current character in the format string
  * @args: The va_list of arguments to print
  * @count: Pointer to the count of characters printed
