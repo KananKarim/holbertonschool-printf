@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include "main.h"
 
 /**
@@ -61,13 +62,10 @@ void print_percent(va_list args, int *count)
  * @args: A va_list that is not used in this function
  * @count: will be incremented by the number of characters printed
  */
+
 void print_int(va_list args, int *count) {
     int i = va_arg(args, int);
-    int num_digits = 0;
-    int temp;
-    int j;
-
-    int digits[10];
+    int divisor = 1;
 
     if (i == 0) {
         _putchar('0');
@@ -75,27 +73,25 @@ void print_int(va_list args, int *count) {
         return;
     }
 
-    if (i < 0) {
+    if (i == INT_MIN) {
+      _putchar('-');
+        (*count)++;
+        i = -(i + 1);
+    }else if(i < 0){
         _putchar('-');
         (*count)++;
         i = -i;
     }
 
-     temp = i;
-    while (temp != 0) {
-        temp /= 10;
-        num_digits++;
+      while (i / divisor > 9) {
+        divisor *= 10;
     }
 
-  
-    for (j = num_digits - 1; j >= 0; j--) {
-        digits[j] = i % 10;
-        i /= 10;
-    }
-
-   for (j = 0; j < num_digits; j++) {
-        _putchar('0' + digits[j]);
+    while (divisor != 0) {
+        _putchar('0' + i / divisor);
         (*count)++;
+        i %= divisor;
+        divisor /= 10;
     }
 }
 
@@ -166,6 +162,7 @@ int _printf(const char *format, ...)
 		}
 		if (*traverse == '\0')
 			break;
+
 		traverse++;
 		handle_format(traverse, args, &count1);
 
