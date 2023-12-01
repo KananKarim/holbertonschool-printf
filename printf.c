@@ -61,12 +61,40 @@ void print_percent(va_list args, int *count)
  * @args: A va_list that is not used in this function
  * @count: will be incremented by the number of characters printed
  */
-
 void print_int(va_list args, int *count) {
     int i = va_arg(args, int);
-    printf("%d", i);
-    while (i != 0) {
+    int num_digits = 0;
+    int temp;
+    int j;
+
+    int digits[10];
+
+    if (i == 0) {
+        _putchar('0');
+        (*count)++;
+        return;
+    }
+
+    if (i < 0) {
+        _putchar('-');
+        (*count)++;
+        i = -i;
+    }
+
+     temp = i;
+    while (temp != 0) {
+        temp /= 10;
+        num_digits++;
+    }
+
+  
+    for (j = num_digits - 1; j >= 0; j--) {
+        digits[j] = i % 10;
         i /= 10;
+    }
+
+   for (j = 0; j < num_digits; j++) {
+        _putchar('0' + digits[j]);
         (*count)++;
     }
 }
