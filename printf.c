@@ -142,7 +142,7 @@ int _printf(const char *format, ...)
 		handle_format(traverse, args, &count1);
 
 		if (*traverse == '\0')
-			break;
+			return (-1);
 	}
 	va_end(args);
 	return (count1);
