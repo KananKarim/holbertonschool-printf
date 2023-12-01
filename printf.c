@@ -94,8 +94,10 @@ int _printf(const char *format, ...)
 		else
 		{
 			write(1, &format[i], 1);
-			count++; }
-		i++; }
+			count++;
+		}
+		i++;
+	}
 	va_end(args);
 	return (count);
 }
