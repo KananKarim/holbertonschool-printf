@@ -25,7 +25,12 @@ void print_char(va_list args, int *count)
 void print_string(va_list args, int *count)
 {
 	char *temp;
-	char *s = va_arg(args, char *);
+	char *s;
+
+	if (args == NULL)
+		return;
+
+	s = va_arg(args, char *);
 
 	if (s == NULL)
 		s = "(null)";
@@ -76,14 +81,15 @@ void handle_format(const char *traverse, va_list args, int *count)
 		}
 	}
 
+	if (*traverse == '\0')
+		return;
+
 	if (prints[i].specifier == NULL && *traverse != '\0')
 	{
 		_putchar('%');
 		_putchar(*traverse);
 		*count += 2;
 	}
-	else if (*traverse == '\0')
-		return;
 }
 
 /**
