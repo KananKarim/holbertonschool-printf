@@ -24,9 +24,11 @@ void print_char(va_list args, int *count)
 
 void print_string(va_list args, int *count)
 {
+	char *temp;
 	char *s = va_arg(args, char *);
 
-	char *temp;
+	if (s == NULL)
+		s = "(null)";
 
 	for (temp = s; *temp != '\0'; temp++)
 	{
@@ -49,6 +51,40 @@ void print_percent(va_list args, int *count)
 }
 
 /**
+ * handle_format - Handles format specifiers for _printf
+ * @traverse: Pointer to the current character in the format string
+ * @args: The va_list of arguments to print
+ * @count: Pointer to the count of characters printed
+ */
+
+void handle_format(const char *traverse, va_list args, int *count)
+{
+	int i;
+	print_t prints[] = {
+		{"c", print_char},
+		{"s", print_string},
+		{"%", print_percent},
+		{NULL, NULL}
+	};
+
+	for (i = 0; prints[i].specifier != NULL; i++)
+	{
+		if (*traverse == *(prints[i].specifier))
+		{
+			prints[i].print_func(args, count);
+			break;
+		}
+	}
+
+	if (prints[i].specifier == NULL)
+	{
+		_putchar('%');
+		_putchar(*traverse);
+		*count += 2;
+	}
+}
+
+/**
  * _printf - A printf-like function that prints a formatted string
  * @format: The format string
  * Return: The number of characters printed
@@ -56,14 +92,9 @@ void print_percent(va_list args, int *count)
 
 int _printf(const char *format, ...)
 {
-	int i, count1 = 0;
+	int count1 = 0;
 	const char *traverse;
-	print_t prints[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"%", print_percent},
-		{NULL, NULL}
-	};
+
 	va_list args;
 
 	va_start(args, format);
@@ -80,19 +111,7 @@ int _printf(const char *format, ...)
 		if (*traverse == '\0')
 			break;
 		traverse++;
-		for (i = 0; prints[i].specifier != NULL; i++)
-		{
-			if (*traverse == *(prints[i]).specifier)
-			{
-				prints[i].print_func(args, &count1);
-				break;
-			}
-		}
-		if (prints[i].specifier == NULL)
-		{
-			_putchar(*traverse);
-			count1++;
-		}
+		handle_format(traverse, args, &count1);
 	}
 	va_end(args);
 	return (count1);
