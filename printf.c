@@ -58,43 +58,44 @@ void print_percent(va_list args, int *count)
 }
 
 /**
- * print_int - Prints a percent symbol
- * @args: A va_list that is not used in this function
+ * print_int - Prints an integer
+ * @args: A va_list pointing to the integer to be printed
  * @count: will be incremented by the number of characters printed
  */
+void print_int(va_list args, int *count)
+{
+    int num = va_arg(args, int);
+    int i, j, power;
+    int temp = num;
+    int digits = 0;
 
-void print_int(va_list args, int *count) {
-    int i = va_arg(args, int);
-    int divisor = 1;
-
-    if (i == 0) {
+    if (num == 0) {
         _putchar('0');
         (*count)++;
         return;
     }
 
-    if (i == INT_MIN) {
-      _putchar('-');
-        (*count)++;
-i = -(i +1);
-	}
-    }else if(i < 0){
+    if (num < 0) {
         _putchar('-');
+        num *= -1;
         (*count)++;
-        i = -i;
     }
 
-      while (i / divisor > 9) {
-        divisor *= 10;
+    while (temp != 0) {
+        digits++;
+        temp /= 10;
     }
 
-    while (divisor != 0) {
-        _putchar('0' + i / divisor);
+    for (i = 0; i < digits; i++) {
+        power = 1;
+        for (j = 0; j < digits - i - 1; j++)
+            power *= 10;
+        _putchar((num / power) % 10 + '0');
         (*count)++;
-        i %= divisor;
-        divisor /= 10;
     }
- }
+}
+
+
 /** handle_format - Handles format specifiers for _printf
  * @traverse: Pointer to the current character in the format string
  * @args: The va_list of arguments to print
