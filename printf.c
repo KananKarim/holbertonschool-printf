@@ -120,6 +120,9 @@ int _printf(const char *format, ...)
 			break;
 		traverse++;
 		handle_format(traverse, args, &count1);
+
+		if (*traverse == '\0')
+			break;
 	}
 	va_end(args);
 	return (count1);
