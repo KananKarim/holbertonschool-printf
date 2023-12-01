@@ -62,13 +62,14 @@ void print_percent(va_list args, int *count)
  * @args: A va_list pointing to the integer to be printed
  * @count: will be incremented by the number of characters printed
  */
+
 void print_int(va_list args, int *count)
 {
     int num = va_arg(args, int);
     int i, j, power;
-    int temp = num;
+    int temp;
     int digits = 0;
-    
+
     if (num == 0) {
         _putchar('0');
         (*count)++;
@@ -81,6 +82,7 @@ void print_int(va_list args, int *count)
         (*count)++;
     }
 
+    temp = num;
     while (temp != 0) {
         digits++;
         temp /= 10;
@@ -90,10 +92,15 @@ void print_int(va_list args, int *count)
         power = 1;
         for (j = 0; j < digits - i - 1; j++)
             power *= 10;
-        _putchar((num / power) % 10 + '0');
+        if (num == INT_MIN && i == 0) {
+            _putchar((num / power) % 10 + '0' + 1);
+        } else {
+            _putchar((num / power) % 10 + '0');
+        }
         (*count)++;
     }
 }
+
 
 
 
