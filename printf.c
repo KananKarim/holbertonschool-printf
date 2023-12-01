@@ -1,5 +1,6 @@
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include "main.h"
 
 /**
@@ -106,7 +107,7 @@ int _printf(const char *format, ...)
 	va_list args;
 
 	va_start(args, format);
-	if (format == NULL)
+	if (format == NULL || (strlen(format) == 1 && format[0] == '%'))
 		return (-1);
 	for (traverse = format; *traverse != '\0'; traverse++)
 	{
